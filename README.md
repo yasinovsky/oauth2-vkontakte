@@ -1,15 +1,15 @@
 # Vkontakte OAuth2 client provider
 
-[![Build Status](https://travis-ci.com/zablik/oauth2-vkontakte.svg?branch=master)](https://travis-ci.com/zablik/oauth2-vkontakte)
-[![Latest Stable Version](https://img.shields.io/packagist/v/zablik/oauth2-vkontakte.svg)](https://packagist.org/packages/zablik/oauth2-vkontakte)
-[![License](https://img.shields.io/packagist/l/zablik/oauth2-vkontakte.svg)](https://packagist.org/packages/zablik/oauth2-vkontakte)
+[![Build Status](https://travis-ci.com/yasinovsky/oauth2-vkontakte.svg?branch=master)](https://travis-ci.com/yasinovsky/oauth2-vkontakte)
+[![Latest Stable Version](https://img.shields.io/packagist/v/yasinovsky/oauth2-vkontakte.svg)](https://packagist.org/packages/yasinovsky/oauth2-vkontakte)
+[![License](https://img.shields.io/packagist/l/yasinovsky/oauth2-vkontakte.svg)](https://packagist.org/packages/yasinovsky/oauth2-vkontakte)
 
 This package provides [Vkontakte](https://vk.com) integration for [OAuth2 Client](https://github.com/thephpleague/oauth2-client) by the League.
 
 ## Installation
 
 ```sh
-composer require zablik/oauth2-vkontakte
+composer require yasinovsky/oauth2-vkontakte
 ```
 ## Versions
 
@@ -21,7 +21,7 @@ Use `v1.2.3` for `"php": "^5.6 || ^7.0"`
 ## Configuration
 
 ```php
-$provider = new J4k\OAuth2\Client\Provider\Vkontakte([
+$provider = new Yaseek\OAuth2\Client\Provider\Vkontakte([
     'clientId'     => '1234567',
     'clientSecret' => 's0meRe4lLySEcRetC0De',
     'redirectUri'  => 'https://example.org/oauth-endpoint',
@@ -77,15 +77,15 @@ else {
 
 ### Public
 ```php
-$provider->usersGet([1234, 56789]); // => \J4k\OAuth2\Client\Provider\VkontakteUser[]
-$provider->friendsGet(23456);        // => \J4k\OAuth2\Client\Provider\VkontakteUser[]
+$provider->usersGet([1234, 56789]); // => \Yaseek\OAuth2\Client\Provider\VkontakteUser[]
+$provider->friendsGet(23456);        // => \Yaseek\OAuth2\Client\Provider\VkontakteUser[]
 ```
 
 ### With additional data
 ```php
 $providerAccessToken = new \League\OAuth2\Client\Token\AccessToken(['access_token' => 'iAmAccessTokenString']);
-$provider->usersGet([1234, 56789], $providerAccessToken); // => \J4k\OAuth2\Client\Provider\VkontakteUser[]
-$provider->friendsGet(23456, $providerAccessToken);        // => \J4k\OAuth2\Client\Provider\VkontakteUser[]
+$provider->usersGet([1234, 56789], $providerAccessToken); // => \Yaseek\OAuth2\Client\Provider\VkontakteUser[]
+$provider->friendsGet(23456, $providerAccessToken);        // => \Yaseek\OAuth2\Client\Provider\VkontakteUser[]
 ```
 
 ## Contributions

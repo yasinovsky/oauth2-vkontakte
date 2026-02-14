@@ -1,5 +1,5 @@
 {
-    "name": "zablik/oauth2-vkontakte",
+    "name": "yasinovsky/oauth2-vkontakte",
     "description": "Vkontakte provider for league/oauth2-client",
     "keywords": [
         "league",
@@ -7,6 +7,14 @@
     ],
     "license": "MIT",
     "authors": [
+        {
+            "name": "Victor Yasinovsky",
+            "email": "yasinovsky@gmail.com"
+        },
+        {
+            "name": "Yury Arlou",
+            "email": "zablik1@gmail.com"
+        },
         {
             "name": "Jack Wall",
             "email": "jw@jack.gd"
@@ -22,12 +30,12 @@
     },
     "autoload": {
         "psr-4": {
-            "J4k\\OAuth2\\Client\\Provider\\": "src"
+            "Yaseek\\OAuth2\\Client\\Provider\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "J4k\\OAuth2\\Client\\Test\\Provider\\": "tests/"
+            "Yaseek\\OAuth2\\Client\\Test\\Provider\\": "tests/"
         }
     }
 }

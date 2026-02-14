@@ -1,13 +1,13 @@
 <?php
 
-namespace J4k\OAuth2\Client\Provider;
+namespace Yaseek\OAuth2\Client\Provider;
 
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 
 /**
  * @see     https://vk.com/dev/fields
  *
- * @package J4k\OAuth2\Client\Provider
+ * @package Yaseek\OAuth2\Client\Provider
  */
 class VkontakteUser implements ResourceOwnerInterface
 {
@@ -182,5 +182,5 @@ class VkontakteUser implements ResourceOwnerInterface
         return $this->getField('email');
     }
 
-    
+
 }
