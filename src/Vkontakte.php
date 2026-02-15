@@ -255,7 +255,7 @@ class Vkontakte extends AbstractProvider
             $response['id'] = $additional['user_id'];
         }
 
-        return new VkontakteUser($response, $response['id']);
+        return new VkontakteUser($response);
     }
 
     /**
