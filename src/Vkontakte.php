@@ -130,6 +130,71 @@ class Vkontakte extends AbstractProvider
     {
         return $this->baseOAuthUri . '/oauth2/auth';
     }
+
+    /**
+     * Returns a randomly generated string, new for each authorization request
+     * @param int $length PKCE verifier string length
+     * @return string
+     * @throws \Exception
+     */
+    private static function _make_pkce_verifier($length = 64) {
+        return bin2hex(random_bytes($length));
+    }
+
+    /**
+     * Returns the value, converted using sha256 and encoded in base64
+     * @param string $verifier PKCE verifier
+     * @return string
+     */
+    private static function _code_challenge($verifier) {
+        $hash = hash('sha256', $verifier, true);
+        return rtrim(strtr(base64_encode($hash), '+/', '-_'), '=');
+    }
+
+    /**
+     * Stores or returns PKCE verifier
+     * @param string|null $value PKCE verifier
+     * @param string $key Key name in $_SESSION variable
+     * @return string|null
+     */
+    private static function _pkce_verifier_storage($value = null, $key = '__pkce') {
+        $result = $value;
+        switch (true) {
+            case is_null($value) && array_key_exists($key, $_SESSION):
+                $result = $_SESSION[$key];
+                unset($_SESSION[$key]);
+                break;
+            default:
+                $_SESSION[$key] = $value;
+                break;
+        }
+        return $result;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getAuthorizationParameters(array $options) {
+        $options = parent::getAuthorizationParameters($options);
+        // PKCE
+        if (!isset($options['code_challenge'])) {
+            $verifier = self::_make_pkce_verifier();
+            $options['code_challenge'] = self::_code_challenge($verifier);
+            $options['code_challenge_method'] = 'S256';
+            self::_pkce_verifier_storage($verifier);
+        }
+        return $options;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAccessToken($grant, array $options = []) {
+        $options['device_id'] = $_GET['device_id'];
+        $options['code_verifier'] = self::_pkce_verifier_storage();
+        return parent::getAccessToken($grant, $options);
+    }
+
     public function getResourceOwnerDetailsUrl(AccessToken $token)
     {
         $params = [
