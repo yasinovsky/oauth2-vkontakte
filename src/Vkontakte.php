@@ -191,11 +191,22 @@ class Vkontakte extends AbstractProvider
     }
 
     /**
+     * Enriches the parameters for the token request with the device identifier
+     * @param string[] $options Token request parameters
+     * @param string $key
+     */
+    private static function _enrich_device_id(array &$options, $key = 'device_id') {
+        if (!array_key_exists($key, $options) && array_key_exists($key, $_GET)) {
+            $options[$key] = $_GET[$key];
+        }
+    }
+
+    /**
      * @inheritDoc
      * @link https://id.vk.com/about/business/go/docs/ru/vkid/latest/vk-id/connection/api-description#Poluchenie-cherez-kod-podtverzhdeniya
      */
     public function getAccessToken($grant, array $options = []) {
-        $options['device_id'] = $_GET['device_id'];
+        self::_enrich_device_id($options);
         $options['code_verifier'] = self::_pkce_verifier_storage();
         return parent::getAccessToken($grant, $options);
     }
