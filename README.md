@@ -32,44 +32,62 @@ $provider = new Yaseek\OAuth2\Client\Provider\Vkontakte([
 ## Authorization
 
 ```php
-// Authorize if needed
-if (PHP_SESSION_NONE === session_status()) session_start();
-$isSessionActive = PHP_SESSION_ACTIVE === session_status();
-$code            = !empty($_GET['code'])  ? $_GET['code']  : null;
-$state           = !empty($_GET['state']) ? $_GET['state'] : null;
-$sessionState    = 'oauth2state';
+// A session is required to store some session data for later usage
+session_start();
 
-// No code – get some
-if (!$code) {
-    $authUrl = $provider->getAuthorizationUrl();
-    if ($isSessionActive) $_SESSION[$sessionState] = $provider->getState();
-    // Redirect user to VK
-    header("Location: $authUrl");
-    die();
-}
+// If we don't have an authorization code then get one
+if (!isset($_GET['code'])) {
 
-// Anti-CSRF
-elseif ($isSessionActive && (empty($state) || ($state !== $_SESSION[$sessionState]))) {
-    unset($_SESSION[$sessionState]);
-    throw new \RuntimeException('Invalid state');
-}
+    // Fetch the authorization URL from the provider; this returns the
+    // urlAuthorize option and generates and applies any necessary parameters
+    // (e.g. state).
+    $authorizationUrl = $provider->getAuthorizationUrl();
 
-// Exchange code to access_token
-else {
+    // Get the state generated for you and store it to the session.
+    $_SESSION['oauth2state'] = $provider->getState();
+
+    // Redirect the user to the authorization URL.
+    header('Location: ' . $authorizationUrl);
+    exit;
+
+// Check given state against previously stored one to mitigate CSRF attack
+} elseif (empty($_GET['state']) || empty($_SESSION['oauth2state']) || $_GET['state'] !== $_SESSION['oauth2state']) {
+
+    if (isset($_SESSION['oauth2state'])) {
+        unset($_SESSION['oauth2state']);
+    }
+
+    exit('Invalid state');
+
+} else {
+
     try {
-        $providerAccessToken = $provider->getAccessToken('authorization_code', ['code' => $code]);
-        // Yay, got it!
-        var_dump([
-            'access_token'  => $providerAccessToken->getToken(),
-            'expires'       => $providerAccessToken->getExpires(),
-            'user_id'       => $providerAccessToken->getValues()['user_id'],
-            'email'         => $providerAccessToken->getValues()['email'], // Only for "email" scope
+
+        // Try to get an access token using the authorization code grant.
+        $tokens = $provider->getAccessToken('authorization_code', [
+            'code' => $_GET['code']
         ]);
+
+        // We have an access token, which we may use in authenticated
+        // requests against the service provider's API.
+        echo 'Access Token: ' . $tokens->getToken() . "<br>";
+        echo 'Refresh Token: ' . $tokens->getRefreshToken() . "<br>";
+        echo 'Expired in: ' . $tokens->getExpires() . "<br>";
+        echo 'Already expired? ' . ($tokens->hasExpired() ? 'expired' : 'not expired') . "<br>";
+
+        // Using the access token, we may look up details about the
+        // resource owner.
+        $resourceOwner = $provider->getResourceOwner($tokens);
+
+        var_export($resourceOwner->toArray());
+
+    } catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
+
+        // Failed to get the access token or user details.
+        exit($e->getMessage());
+
     }
-    catch (IdentityProviderException $e) {
-        // Log error
-        error_log($e->getMessage());
-    }
+
 }
 ```
 
