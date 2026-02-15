@@ -176,10 +176,11 @@ class Vkontakte extends AbstractProvider
 
     /**
      * @inheritDoc
+     * @link https://id.vk.com/about/business/go/docs/ru/vkid/latest/vk-id/connection/api-description#Zapros-koda-podtverzhdeniya-i-rabota-s-formoj-razresheniya-dostupov-polzovatelya
      */
     protected function getAuthorizationParameters(array $options) {
         $options = parent::getAuthorizationParameters($options);
-        // PKCE
+        // VK OAuth 2.1 PKCE Protocol Challenge
         if (!isset($options['code_challenge'])) {
             $verifier = self::_make_pkce_verifier();
             $options['code_challenge'] = self::_code_challenge($verifier);
@@ -191,6 +192,7 @@ class Vkontakte extends AbstractProvider
 
     /**
      * @inheritDoc
+     * @link https://id.vk.com/about/business/go/docs/ru/vkid/latest/vk-id/connection/api-description#Poluchenie-cherez-kod-podtverzhdeniya
      */
     public function getAccessToken($grant, array $options = []) {
         $options['device_id'] = $_GET['device_id'];

@@ -1,10 +1,11 @@
-# Vkontakte OAuth2 client provider
+# VKontakte OAuth 2.1 Client Provider for The PHP League OAuth2-Client
 
-[![Build Status](https://travis-ci.com/yasinovsky/oauth2-vkontakte.svg?branch=master)](https://travis-ci.com/yasinovsky/oauth2-vkontakte)
-[![Latest Stable Version](https://img.shields.io/packagist/v/yasinovsky/oauth2-vkontakte.svg)](https://packagist.org/packages/yasinovsky/oauth2-vkontakte)
-[![License](https://img.shields.io/packagist/l/yasinovsky/oauth2-vkontakte.svg)](https://packagist.org/packages/yasinovsky/oauth2-vkontakte)
+[![Source Code](https://img.shields.io/badge/source-yasinovsky/oauth2--vkontakte-blue.svg?style=flat-square)](https://github.com/yasinovsky/oauth2-vkontakte)
+[![Latest Version](https://img.shields.io/github/release/yasinovsky/oauth2-vkontakte.svg?style=flat-square)](https://github.com/yasinovsky/oauth2-vkontakte/releases)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/yasinovsky/oauth2-vkontakte/blob/master/LICENSE.md)
+[![Total Downloads](https://img.shields.io/packagist/dt/yasinovsky/oauth2-vkontakte.svg?style=flat-square)](https://packagist.org/packages/yasinovsky/oauth2-vkontakte) 
 
-This package provides [Vkontakte](https://vk.com) integration for [OAuth2 Client](https://github.com/thephpleague/oauth2-client) by the League.
+This package provides [VKontakte](https://vk.com) integration for [OAuth2 Client](https://github.com/thephpleague/oauth2-client) by the League.
 
 ## Installation
 

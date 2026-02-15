@@ -1,5 +1,7 @@
 # The MIT License (MIT)
 
+Copyright (c) 2026 Victor Yasinovsky <yasinovsky@gmail.com>\
+Copyright (c) 2021 Yury Arlou <zablik1@gmail.com>\
 Copyright (c) 2014 Jack Wall <jw@jack.gd>
 
 > Permission is hereby granted, free of charge, to any person obtaining a copy
