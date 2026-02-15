@@ -9,9 +9,9 @@ use Psr\Http\Message\ResponseInterface;
 
 class Vkontakte extends AbstractProvider
 {
-    protected $baseOAuthUri = 'https://oauth.vk.com';
+    protected $baseOAuthUri = 'https://id.vk.com';
     protected $baseUri      = 'https://api.vk.com/method';
-    protected $version      = '5.131';
+    protected $version      = '5.199';
     protected $language     = null;
 
     /**
@@ -128,7 +128,7 @@ class Vkontakte extends AbstractProvider
     }
     public function getBaseAccessTokenUrl(array $params)
     {
-        return "$this->baseOAuthUri/access_token";
+        return $this->baseOAuthUri . '/oauth2/auth';
     }
     public function getResourceOwnerDetailsUrl(AccessToken $token)
     {
