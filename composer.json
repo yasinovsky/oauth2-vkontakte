@@ -1,6 +1,6 @@
 {
     "name": "yasinovsky/oauth2-vkontakte",
-    "description": "VKontakte OAuth 2.1 Client Provider for The PHP League OAuth2-Client",
+    "description": "VKontakte OAuth 2.1 Client Provider for The PHP League OAuth2 Client",
     "keywords": [
         "oauth",
         "oauth2",
