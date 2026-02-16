@@ -18,30 +18,14 @@ class Vkontakte extends AbstractProvider
     protected $language     = null;
 
     /**
-     * @type array
-     * @see https://vk.com/dev/permissions
+     * Default scopes used by this provider
+     * @link https://id.vk.com/about/business/go/docs/ru/vkid/latest/vk-id/connection/work-with-user-info/scopes
+     * @var string[]
      */
-    public $scopes = [
-        'email',
-        'friends',
-        'offline',
-        //'photos',
-        //'wall',
-        //'ads',
-        //'audio',
-        //'docs',
-        //'groups',
-        //'market',
-        //'messages',
-        //'nohttps',
-        //'notes',
-        //'notifications',
-        //'notify',
-        //'pages',
-        //'stats',
-        //'status',
-        //'video',
+    protected $scopes = [
+        'vkid.personal_info',
     ];
+
     /**
      * @type array
      * @see https://new.vk.com/dev/fields
@@ -224,10 +208,16 @@ class Vkontakte extends AbstractProvider
 
         return $url;
     }
-    protected function getDefaultScopes()
-    {
-        return $this->scopes;
+
+    /**
+     * @inheritDoc
+     */
+    protected function getDefaultScopes() {
+        return is_string($this->scopes)
+            ? explode(' ', $this->scopes)
+            : $this->scopes;
     }
+
     protected function checkResponse(ResponseInterface $response, $data)
     {
         // Metadata info
