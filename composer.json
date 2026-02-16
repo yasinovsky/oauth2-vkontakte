@@ -1,9 +1,25 @@
 {
     "name": "yasinovsky/oauth2-vkontakte",
-    "description": "Vkontakte provider for league/oauth2-client",
+    "description": "VKontakte OAuth 2.1 Client Provider for The PHP League OAuth2 Client",
     "keywords": [
-        "league",
-        "package"
+        "oauth",
+        "oauth2",
+        "authorization",
+        "authorisation",
+        "authentication",
+        "league-client",
+        "league-oauth2",
+        "oauth2-client",
+        "vkontakte",
+        "vkontakte-api",
+        "vkontakte-oauth2",
+        "vkontakte-sdk",
+        "vk",
+        "vk-api",
+        "vk-id",
+        "vk-id-sdk",
+        "vk-oauth2",
+        "vk-sdk"
     ],
     "license": "MIT",
     "authors": [

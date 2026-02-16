@@ -1,35 +1,52 @@
-# Vkontakte OAuth2 client provider
+# VKontakte OAuth 2.1 Client Provider for The PHP League OAuth2 Client
 
-[![Build Status](https://travis-ci.com/yasinovsky/oauth2-vkontakte.svg?branch=master)](https://travis-ci.com/yasinovsky/oauth2-vkontakte)
-[![Latest Stable Version](https://img.shields.io/packagist/v/yasinovsky/oauth2-vkontakte.svg)](https://packagist.org/packages/yasinovsky/oauth2-vkontakte)
-[![License](https://img.shields.io/packagist/l/yasinovsky/oauth2-vkontakte.svg)](https://packagist.org/packages/yasinovsky/oauth2-vkontakte)
+[![Source Code](https://img.shields.io/badge/source-yasinovsky/oauth2--vkontakte-blue.svg?style=flat-square)](https://github.com/yasinovsky/oauth2-vkontakte)
+[![Latest Version](https://img.shields.io/github/release/yasinovsky/oauth2-vkontakte.svg?style=flat-square)](https://github.com/yasinovsky/oauth2-vkontakte/releases)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/yasinovsky/oauth2-vkontakte/blob/master/LICENSE.md)
+[![Total Downloads](https://img.shields.io/packagist/dt/yasinovsky/oauth2-vkontakte.svg?style=flat-square)](https://packagist.org/packages/yasinovsky/oauth2-vkontakte) 
 
-This package provides [Vkontakte](https://vk.com) integration for [OAuth2 Client](https://github.com/thephpleague/oauth2-client) by the League.
+This package provides [VKontakte OAuth 2.1](https://vk.com) support for the PHP League's [OAuth 2.0 Client](https://github.com/thephpleague/oauth2-client).
+
+This package is compliant with [PSR-1][], [PSR-2][], [PSR-4][], and [PSR-7][]. If you notice compliance oversights, please send a patch via pull request.
+
+[PSR-1]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md
+[PSR-2]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md
+[PSR-4]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md
+[PSR-7]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-7-http-message.md
+
+## Requirements
+
+We support the following versions of PHP:
+
+* PHP 8.5
+* PHP 8.4
+* PHP 8.3
+* PHP 8.2
+* PHP 8.1
+* PHP 8.0
+* PHP 7.4
+* PHP 7.3
 
 ## Installation
 
 ```sh
 composer require yasinovsky/oauth2-vkontakte
 ```
-## Versions
 
-Use `v2.0+` for `"php": "^7.3 || ^8.0"`
+## Usage
 
-Use `v1.2.3` for `"php": "^5.6 || ^7.0"`
-
-
-## Configuration
+### Configuration
 
 ```php
 $provider = new Yaseek\OAuth2\Client\Provider\Vkontakte([
     'clientId'     => '1234567',
     'clientSecret' => 's0meRe4lLySEcRetC0De',
     'redirectUri'  => 'https://example.org/oauth-endpoint',
-    'scopes'       => ['email', 'offline', 'friends'],
+    'scope'        => 'vkid.personal_info email phone',
 ]);
 ```
 
-## Authorization
+### Authorization Code Flow
 
 ```php
 // A session is required to store some session data for later usage
@@ -96,16 +113,18 @@ if (!isset($_GET['code'])) {
 ### Public
 ```php
 $provider->usersGet([1234, 56789]); // => \Yaseek\OAuth2\Client\Provider\VkontakteUser[]
-$provider->friendsGet(23456);        // => \Yaseek\OAuth2\Client\Provider\VkontakteUser[]
+$provider->friendsGet(23456);       // => \Yaseek\OAuth2\Client\Provider\VkontakteUser[]
 ```
 
 ### With additional data
 ```php
 $providerAccessToken = new \League\OAuth2\Client\Token\AccessToken(['access_token' => 'iAmAccessTokenString']);
 $provider->usersGet([1234, 56789], $providerAccessToken); // => \Yaseek\OAuth2\Client\Provider\VkontakteUser[]
-$provider->friendsGet(23456, $providerAccessToken);        // => \Yaseek\OAuth2\Client\Provider\VkontakteUser[]
+$provider->friendsGet(23456, $providerAccessToken);       // => \Yaseek\OAuth2\Client\Provider\VkontakteUser[]
 ```
 
-## Contributions
+## Credits
 
-Contributions are very welcome. Please submit a PR
+- [Victor Yasinovsky](https://github.com/yasinovsky)
+- [Yury Arlou](https://github.com/zablik)
+- [Jack Wall](https://github.com/j4k)
