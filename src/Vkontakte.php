@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 class Vkontakte extends AbstractProvider
 {
 
-    const VERSION = '3.0.1';
+    const VERSION = '3.0.2';
 
     protected $baseOAuthUri = 'https://id.vk.com';
     protected $baseUri      = 'https://api.vk.com/method';
@@ -18,54 +18,40 @@ class Vkontakte extends AbstractProvider
     protected $language     = null;
 
     /**
-     * @type array
-     * @see https://vk.com/dev/permissions
+     * PKCE challenge parameters
+     * @var string[]
      */
-    public $scopes = [
-        'email',
-        'friends',
-        'offline',
-        //'photos',
-        //'wall',
-        //'ads',
-        //'audio',
-        //'docs',
-        //'groups',
-        //'market',
-        //'messages',
-        //'nohttps',
-        //'notes',
-        //'notifications',
-        //'notify',
-        //'pages',
-        //'stats',
-        //'status',
-        //'video',
+    private static $_pkce_challenge = [
+        'method' => 'S256',
+        'algorithm' => 'sha256',
     ];
+
     /**
-     * @type array
-     * @see https://new.vk.com/dev/fields
+     * Default scopes used by this provider
+     * @link https://id.vk.com/about/business/go/docs/ru/vkid/latest/vk-id/connection/work-with-user-info/scopes
+     * @var string[]
+     */
+    protected $scopes = [
+        'vkid.personal_info',
+    ];
+
+    /**
+     * User Field Set
+     * @link https://dev.vk.com/ru/reference/objects/user
+     * @var string[]
      */
     public $userFields = [
-        'bdate',
-        'city',
-        'country',
-        'domain',
-        'first_name',
-        'friend_status',
-        'has_photo',
-        'home_town',
+        // -- Basic fields
         'id',
-        'is_friend',
+        'first_name',
         'last_name',
-        'maiden_name',
-        'nickname',
-        'photo_max',
-        'photo_max_orig',
-        'screen_name',
-        'sex',
+        'deactivated',
+        'is_closed',
+        'can_access_closed',
+        // -- Optional fields
         //'about',
         //'activities',
+        'bdate',
         //'blacklisted',
         //'blacklisted_by_me',
         //'books',
@@ -75,24 +61,47 @@ class Vkontakte extends AbstractProvider
         //'can_send_friend_request',
         //'can_write_private_message',
         //'career',
+        'city',
         //'common_count',
         //'connections',
         //'contacts',
-        //'crop_photo',
         //'counters',
-        //'deactivated',
+        'country',
+        //'crop_photo',
+        'domain',
         //'education',
         //'exports',
+        //'first_name_abl',
+        //'first_name_acc',
+        //'first_name_dat',
+        //'first_name_gen',
+        //'first_name_ins',
+        //'first_name_nom',
         //'followers_count',
+        'friend_status',
         //'games',
         //'has_mobile',
-        //'hidden',
+        'has_photo',
+        'home_town',
         //'interests',
         //'is_favorite',
+        'is_friend',
         //'is_hidden_from_feed',
+        //'is_no_index',
+        //'is_verified',
+        //'last_name_abl',
+        //'last_name_acc',
+        //'last_name_dat',
+        //'last_name_gen',
+        //'last_name_ins',
+        //'last_name_nom',
         //'last_seen',
+        //'lists',
+        'maiden_name',
         //'military',
         //'movies',
+        //'music',
+        'nickname',
         //'occupation',
         //'online',
         //'personal',
@@ -102,17 +111,22 @@ class Vkontakte extends AbstractProvider
         //'photo_400_orig',
         //'photo_50',
         //'photo_id',
+        'photo_max',
+        'photo_max_orig',
         //'quotes',
         //'relation',
         //'relatives',
         //'schools',
+        'screen_name',
+        'sex',
         //'site',
         //'status',
         //'timezone',
+        //'trending',
         //'tv',
         //'universities',
         //'verified',
-        //'wall_comments',
+        //'wall_default',
     ];
 
     /**
@@ -150,7 +164,7 @@ class Vkontakte extends AbstractProvider
      * @return string
      */
     private static function _code_challenge($verifier) {
-        $hash = hash('sha256', $verifier, true);
+        $hash = hash(self::$_pkce_challenge['algorithm'], $verifier, true);
         return rtrim(strtr(base64_encode($hash), '+/', '-_'), '=');
     }
 
@@ -184,7 +198,7 @@ class Vkontakte extends AbstractProvider
         if (!isset($options['code_challenge'])) {
             $verifier = self::_make_pkce_verifier();
             $options['code_challenge'] = self::_code_challenge($verifier);
-            $options['code_challenge_method'] = 'S256';
+            $options['code_challenge_method'] = self::$_pkce_challenge['method'];
             self::_pkce_verifier_storage($verifier);
         }
         return $options;
@@ -224,10 +238,16 @@ class Vkontakte extends AbstractProvider
 
         return $url;
     }
-    protected function getDefaultScopes()
-    {
-        return $this->scopes;
+
+    /**
+     * @inheritDoc
+     */
+    protected function getDefaultScopes() {
+        return is_string($this->scopes)
+            ? explode(' ', $this->scopes)
+            : $this->scopes;
     }
+
     protected function checkResponse(ResponseInterface $response, $data)
     {
         // Metadata info
@@ -263,9 +283,6 @@ class Vkontakte extends AbstractProvider
         $additional = $token->getValues();
         if (!empty($additional['email'])) {
             $response['email'] = $additional['email'];
-        }
-        if (!empty($response['uid']) && 4 === floor($this->version)) {
-            $response['id'] = $response['uid'];
         }
         if (!empty($additional['user_id'])) {
             $response['id'] = $additional['user_id'];

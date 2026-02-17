@@ -42,7 +42,7 @@ $provider = new Yaseek\OAuth2\Client\Provider\Vkontakte([
     'clientId'     => '1234567',
     'clientSecret' => 's0meRe4lLySEcRetC0De',
     'redirectUri'  => 'https://example.org/oauth-endpoint',
-    'scope'        => 'vkid.personal_info email phone',
+    'scopes'       => 'vkid.personal_info email phone', // Optional
 ]);
 ```
 
