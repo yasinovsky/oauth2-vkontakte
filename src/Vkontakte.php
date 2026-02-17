@@ -18,6 +18,15 @@ class Vkontakte extends AbstractProvider
     protected $language     = null;
 
     /**
+     * PKCE challenge parameters
+     * @var string[]
+     */
+    private static $_pkce_challenge = [
+        'method' => 'S256',
+        'algorithm' => 'sha256',
+    ];
+
+    /**
      * Default scopes used by this provider
      * @link https://id.vk.com/about/business/go/docs/ru/vkid/latest/vk-id/connection/work-with-user-info/scopes
      * @var string[]
@@ -155,7 +164,7 @@ class Vkontakte extends AbstractProvider
      * @return string
      */
     private static function _code_challenge($verifier) {
-        $hash = hash('sha256', $verifier, true);
+        $hash = hash(self::$_pkce_challenge['algorithm'], $verifier, true);
         return rtrim(strtr(base64_encode($hash), '+/', '-_'), '=');
     }
 
@@ -189,7 +198,7 @@ class Vkontakte extends AbstractProvider
         if (!isset($options['code_challenge'])) {
             $verifier = self::_make_pkce_verifier();
             $options['code_challenge'] = self::_code_challenge($verifier);
-            $options['code_challenge_method'] = 'S256';
+            $options['code_challenge_method'] = self::$_pkce_challenge['method'];
             self::_pkce_verifier_storage($verifier);
         }
         return $options;
