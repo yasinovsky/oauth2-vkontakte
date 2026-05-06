@@ -293,9 +293,9 @@ class Vkontakte extends AbstractProvider
     /**
      * @see https://vk.com/dev/users.get
      *
-     * @param integer[] $ids
+     * @param integer[]        $ids
      * @param AccessToken|null $token Current user if empty
-     * @param array $params
+     * @param array            $params
      *
      * @return VkontakteUser[]
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -328,9 +328,9 @@ class Vkontakte extends AbstractProvider
     /**
      * @see https://vk.com/dev/friends.get
      *
-     * @param integer $userId
+     * @param integer          $userId
      * @param AccessToken|null $token
-     * @param array $params
+     * @param array            $params
      *
      * @return VkontakteUser[]
      * @throws \GuzzleHttp\Exception\GuzzleException
