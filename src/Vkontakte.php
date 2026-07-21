@@ -10,10 +10,10 @@ use Psr\Http\Message\ResponseInterface;
 class Vkontakte extends AbstractProvider
 {
 
-    const VERSION = '3.0.3';
+    const VERSION = '3.0.4';
 
-    protected $baseOAuthUri = 'https://id.vk.com';
-    protected $baseUri      = 'https://api.vk.com/method';
+    protected $baseOAuthUri = 'https://id.vk.ru';
+    protected $baseUri      = 'https://api.vk.ru/method';
     protected $version      = '5.199';
     protected $language     = null;
 
@@ -28,16 +28,16 @@ class Vkontakte extends AbstractProvider
 
     /**
      * Default scopes used by this provider
-     * @link https://id.vk.com/about/business/go/docs/ru/vkid/latest/vk-id/connection/work-with-user-info/scopes
+     * @link https://id.vk.ru/about/business/go/docs/ru/vkid/latest/vk-id/connection/work-with-user-info/scopes
      * @var string[]
      */
-    protected $scopes = [
+    public $scopes = [
         'vkid.personal_info',
     ];
 
     /**
      * User Field Set
-     * @link https://dev.vk.com/ru/reference/objects/user
+     * @link https://dev.vk.ru/ru/reference/objects/user
      * @var string[]
      */
     public $userFields = [
@@ -131,6 +131,7 @@ class Vkontakte extends AbstractProvider
 
     /**
      * @param string $language
+     * @return Vkontakte
      */
     public function setLanguage($language)
     {
@@ -141,7 +142,7 @@ class Vkontakte extends AbstractProvider
 
     public function getBaseAuthorizationUrl()
     {
-        return "$this->baseOAuthUri/authorize";
+        return $this->baseOAuthUri . '/authorize';
     }
     public function getBaseAccessTokenUrl(array $params)
     {
@@ -190,7 +191,7 @@ class Vkontakte extends AbstractProvider
 
     /**
      * @inheritDoc
-     * @link https://id.vk.com/about/business/go/docs/ru/vkid/latest/vk-id/connection/api-description#Zapros-koda-podtverzhdeniya-i-rabota-s-formoj-razresheniya-dostupov-polzovatelya
+     * @link https://id.vk.ru/about/business/go/docs/ru/vkid/latest/vk-id/connection/api-description#Zapros-koda-podtverzhdeniya-i-rabota-s-formoj-razresheniya-dostupov-polzovatelya
      */
     protected function getAuthorizationParameters(array $options) {
         $options = parent::getAuthorizationParameters($options);
@@ -217,7 +218,7 @@ class Vkontakte extends AbstractProvider
 
     /**
      * @inheritDoc
-     * @link https://id.vk.com/about/business/go/docs/ru/vkid/latest/vk-id/connection/api-description#Poluchenie-cherez-kod-podtverzhdeniya
+     * @link https://id.vk.ru/about/business/go/docs/ru/vkid/latest/vk-id/connection/api-description#Poluchenie-cherez-kod-podtverzhdeniya
      */
     public function getAccessToken($grant, array $options = []) {
         self::_enrich_device_id($options);
@@ -234,9 +235,7 @@ class Vkontakte extends AbstractProvider
             'lang'         => $this->language
         ];
         $query  = $this->buildQueryString($params);
-        $url    = "$this->baseUri/users.get?$query";
-
-        return $url;
+        return $this->baseUri . '/users.get?' . $query;
     }
 
     /**
@@ -292,13 +291,14 @@ class Vkontakte extends AbstractProvider
     }
 
     /**
-     * @see https://vk.com/dev/users.get
+     * @see https://vk.ru/dev/users.get
      *
      * @param integer[]        $ids
      * @param AccessToken|null $token Current user if empty
      * @param array            $params
      *
      * @return VkontakteUser[]
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function usersGet(array $ids = [], AccessToken $token = null, array $params = [])
     {
@@ -315,7 +315,7 @@ class Vkontakte extends AbstractProvider
         ];
         $params  = array_merge($default, $params);
         $query   = $this->buildQueryString($params);
-        $url     = "$this->baseUri/users.get?$query";
+        $url     = $this->baseUri . '/users.get?' . $query;
 
         $response   = $this->getResponse($this->createRequest(static::METHOD_GET, $url, $token, []))['response'];
         $users      = !empty($response['items']) ? $response['items'] : $response;
@@ -326,13 +326,14 @@ class Vkontakte extends AbstractProvider
         return array_map($array2user, $users);
     }
     /**
-     * @see https://vk.com/dev/friends.get
+     * @see https://vk.ru/dev/friends.get
      *
      * @param integer          $userId
      * @param AccessToken|null $token
      * @param array            $params
      *
      * @return VkontakteUser[]
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function friendsGet($userId, AccessToken $token = null, array $params = [])
     {
@@ -345,7 +346,7 @@ class Vkontakte extends AbstractProvider
         ];
         $params  = array_merge($default, $params);
         $query   = $this->buildQueryString($params);
-        $url     = "$this->baseUri/friends.get?$query";
+        $url     = $this->baseUri . '/friends.get?' . $query;
 
         $response     = $this->getResponse($this->createRequest(static::METHOD_GET, $url, $token, []))['response'];
         $friends      = !empty($response['items']) ? $response['items'] : $response;

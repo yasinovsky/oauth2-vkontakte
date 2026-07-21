@@ -5,7 +5,7 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/yasinovsky/oauth2-vkontakte/blob/master/LICENSE.md)
 [![Total Downloads](https://img.shields.io/packagist/dt/yasinovsky/oauth2-vkontakte.svg?style=flat-square)](https://packagist.org/packages/yasinovsky/oauth2-vkontakte) 
 
-This package provides [VKontakte OAuth 2.1](https://vk.com) support for the PHP League's [OAuth 2.0 Client](https://github.com/thephpleague/oauth2-client).
+This package provides [VKontakte OAuth 2.1](https://vk.ru) support for the PHP League's [OAuth 2.0 Client](https://github.com/thephpleague/oauth2-client).
 
 This package is compliant with [PSR-1][], [PSR-2][], [PSR-4][], and [PSR-7][]. If you notice compliance oversights, please send a patch via pull request.
 
@@ -35,7 +35,7 @@ composer require yasinovsky/oauth2-vkontakte
 
 ## Usage
 
-Create VK application using this [link](https://id.vk.com/about/business/go)
+Create VK application using this [link](https://id.vk.ru/about/business/go)
 
 ### Configuration
 

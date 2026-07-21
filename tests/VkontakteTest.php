@@ -14,7 +14,7 @@ class VkontakteTest extends \PHPUnit\Framework\TestCase
      * @type Provider
      */
     protected $provider;
-    protected $defaultScopes = ['email', 'friends', 'offline'];
+    protected $defaultScopes = ['vkid.personal_info'];
 
     protected function setUp(): void
     {
@@ -205,7 +205,7 @@ class VkontakteTest extends \PHPUnit\Framework\TestCase
         $url = $this->provider->getBaseAccessTokenUrl([]);
         $uri = parse_url($url);
 
-        static::assertEquals('/access_token', $uri['path']);
+        static::assertEquals('/oauth2/auth', $uri['path']);
     }
     public function testResourceOwnerDetailsUrlNotContainLanguage()
     {
