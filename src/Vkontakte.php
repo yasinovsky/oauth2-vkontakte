@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 class Vkontakte extends AbstractProvider
 {
 
-    const VERSION = '3.0.3';
+    const VERSION = '3.0.4';
 
     protected $baseOAuthUri = 'https://id.vk.ru';
     protected $baseUri      = 'https://api.vk.ru/method';
